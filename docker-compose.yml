@@ -1,18 +1,18 @@
 services:
   postgres:
     image: postgres:16
-    container_name: postgresdb-template
+    container_name: flashbox-database
     volumes:
       - pg_data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: template_db
+      POSTGRES_USER: flashbox
+      POSTGRES_PASSWORD: flashbox
+      POSTGRES_DB: flashbox_db
     ports:
       - "5432:5432"
 
 volumes:
   pg_data:
-    name: template-postgres-data
+    name: flashbox-postgres-data

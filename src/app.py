@@ -27,8 +27,8 @@ def register_routers(app: FastAPI, container):
 
 def create_app(database_url=settings.DATABASE_URL) -> FastAPI:
     app = FastAPI(
-        title='Meu App',
-        description='Documentação da API',
+        title='FlashBox API',
+        description='Documentação da API do FlashBox',
         version='1.0.0',
         lifespan=lifespan,
     )

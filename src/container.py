@@ -5,8 +5,14 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from src.core.services.flashcard_service import FlashcardService
+from src.core.services.flashcard_stack_service import FlashcardStackService
 from src.core.services.user_service import UserService
-from src.database.repositories.user_repository import UserRepository
+from src.database.repositories import (
+    FlashcardRepository,
+    FlashcardStackRepository,
+    UserRepository,
+)
 
 
 class Container(containers.DeclarativeContainer):
@@ -31,8 +37,21 @@ class Container(containers.DeclarativeContainer):
     user_repository = providers.Factory(
         UserRepository, sessionmaker=async_sessionmaker
     )
+    flashcard_repository = providers.Factory(
+        FlashcardRepository, sessionmaker=async_sessionmaker
+    )
+    flashcard_stack_repository = providers.Factory(
+        FlashcardStackRepository, sessionmaker=async_sessionmaker
+    )
 
     # Services
     user_service = providers.Factory(
         UserService, user_repository=user_repository
+    )
+    flashcard_service = providers.Factory(
+        FlashcardService, flashcard_repository=flashcard_repository
+    )
+    flashcard_stack_service = providers.Factory(
+        FlashcardStackService,
+        flashcard_stack_repository=flashcard_stack_repository,
     )
