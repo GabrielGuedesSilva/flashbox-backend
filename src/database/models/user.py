@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from sqlalchemy import Column, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 
 from src.database.models import Base
 
@@ -27,4 +28,11 @@ class User(Base):
         server_default=func.now(),
         onupdate=func.now(),
         nullable=False,
+    )
+    flashcard_stacks = relationship(
+        'FlashcardStack',
+        back_populates='user',
+        cascade='all, delete',
+        passive_deletes=True,
+        lazy='selectin',
     )

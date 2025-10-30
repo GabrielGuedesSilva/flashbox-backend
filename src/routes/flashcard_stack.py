@@ -10,6 +10,7 @@ from src.core.schemas.flashcard_schemas import (
     FlashcardStackUpdateSchema,
 )
 from src.database.query import Query
+from src.security.authentication_middleware import authenticated
 
 
 class FlashcardStackRouter:
@@ -25,10 +26,12 @@ class FlashcardStackRouter:
             status_code=HTTPStatus.CREATED,
             response_model=FlashcardStackSchema,
         )
+        @authenticated
         async def create_flashcard_stack(
             request: Request,
             flashcard_stack: FlashcardStackCreateSchema,
         ):
+            flashcard_stack.user_id = request.state.user_id
             result = await self.flashcard_stack_service.add(flashcard_stack)
             return result
 
@@ -37,6 +40,7 @@ class FlashcardStackRouter:
             status_code=HTTPStatus.OK,
             response_model=List[FlashcardStackSchema],
         )
+        @authenticated
         async def get_flashcard_stacks(
             request: Request,
         ):
@@ -49,6 +53,7 @@ class FlashcardStackRouter:
             status_code=HTTPStatus.OK,
             response_model=FlashcardStackSchema,
         )
+        @authenticated
         async def get_flashcard_stack_by_id(
             request: Request,
             flashcard_stack_id: UUID,
@@ -63,6 +68,7 @@ class FlashcardStackRouter:
             status_code=HTTPStatus.OK,
             response_model=FlashcardStackSchema,
         )
+        @authenticated
         async def update_flashcard_stack(
             request: Request,
             flashcard_stack_id: UUID,
@@ -76,6 +82,7 @@ class FlashcardStackRouter:
         @self.router.delete(
             '/{flashcard_stack_id}', status_code=HTTPStatus.NO_CONTENT
         )
+        @authenticated
         async def delete_flashcard_stack(
             request: Request,
             flashcard_stack_id: UUID,

@@ -12,6 +12,7 @@ class FlashcardCreateSchema(BaseModel):
     translation: NonEmptyStr
     example: Optional[NonEmptyStr] = None
     flashcard_stack_id: Optional[UUID] = None
+    user_id: Optional[UUID] = None
 
 
 class FlashcardSchema(BaseModel):
@@ -20,6 +21,7 @@ class FlashcardSchema(BaseModel):
     translation: NonEmptyStr
     example: Optional[NonEmptyStr] = None
     flashcard_stack_id: Optional[UUID] = None
+    user_id: Optional[UUID] = None
     created_at: datetime
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)
@@ -36,6 +38,7 @@ class FlashcardStackCreateSchema(BaseModel):
     title: NonEmptyStr
     main_language: NonEmptyStr
     learning_language: NonEmptyStr
+    user_id: Optional[UUID] = None
 
 
 class FlashcardStackSchema(BaseModel):
@@ -44,6 +47,7 @@ class FlashcardStackSchema(BaseModel):
     main_language: NonEmptyStr
     learning_language: NonEmptyStr
     flashcards: Optional[List[FlashcardSchema]] = None
+    user_id: Optional[UUID] = None
     created_at: datetime
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)

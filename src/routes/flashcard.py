@@ -10,6 +10,7 @@ from src.core.schemas.flashcard_schemas import (
     FlashcardUpdateSchema,
 )
 from src.database.query import Query
+from src.security.authentication_middleware import authenticated
 
 
 class FlashcardRouter:
@@ -23,16 +24,19 @@ class FlashcardRouter:
         @self.router.post(
             '', status_code=HTTPStatus.CREATED, response_model=FlashcardSchema
         )
+        @authenticated
         async def create_flashcard(
             request: Request,
             flashcard: FlashcardCreateSchema,
         ):
+            flashcard.user_id = request.state.user_id
             result = await self.flashcard_service.add(flashcard)
             return result
 
         @self.router.get(
             '', status_code=HTTPStatus.OK, response_model=List[FlashcardSchema]
         )
+        @authenticated
         async def get_flashcards(
             request: Request,
         ):
@@ -45,6 +49,7 @@ class FlashcardRouter:
             status_code=HTTPStatus.OK,
             response_model=FlashcardSchema,
         )
+        @authenticated
         async def get_flashcard_by_id(
             request: Request,
             flashcard_id: UUID,
@@ -57,6 +62,7 @@ class FlashcardRouter:
             status_code=HTTPStatus.OK,
             response_model=FlashcardSchema,
         )
+        @authenticated
         async def update_flashcard(
             request: Request,
             flashcard_id: UUID,
@@ -70,6 +76,7 @@ class FlashcardRouter:
         @self.router.delete(
             '/{flashcard_id}', status_code=HTTPStatus.NO_CONTENT
         )
+        @authenticated
         async def delete_flashcard(
             request: Request,
             flashcard_id: UUID,

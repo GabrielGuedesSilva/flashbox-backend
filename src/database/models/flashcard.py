@@ -25,6 +25,12 @@ class Flashcard(Base):
         nullable=True,
     )
     flashcard_stack = relationship('FlashcardStack', passive_deletes=True)
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=True,
+    )
+    user = relationship('User', passive_deletes=True)
     created_at = Column(
         DateTime, default=func.now(), server_default=func.now(), nullable=False
     )

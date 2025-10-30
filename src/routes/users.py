@@ -4,17 +4,20 @@ from uuid import UUID
 
 from fastapi import APIRouter, Request
 
+from src.core.schemas.flashcard_schemas import FlashcardSchema
 from src.core.schemas.user_schemas import (
     UserCreateSchema,
     UserSchema,
     UserUpdateSchema,
 )
 from src.database.query import Query
+from src.security.authentication_middleware import authenticated
 
 
 class UserRouter:
     def __init__(self, container):
         self.user_service = container.user_service()
+        self.flashcard_service = container.flashcard_service()
         self.router = APIRouter(
             prefix='/users',
             tags=['users'],
@@ -67,3 +70,18 @@ class UserRouter:
             user_id: UUID,
         ):
             await self.user_service.remove(user_id)
+
+        @self.router.get(
+            '/{user_id}/flashcards',
+            status_code=HTTPStatus.OK,
+            response_model=List[FlashcardSchema],
+        )
+        @authenticated
+        async def get_flashcards_without_flashcard_stack_by_user_id(
+            request: Request,
+        ):
+            query = Query(request.query_params)
+            query.filters['user_id'] = request.state.user_id
+            query.filters['flashcard_stack_id'] = None
+            flashcards = await self.flashcard_service.get_all(query)
+            return flashcards
