@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr
@@ -8,16 +8,14 @@ from .types import UserName
 
 
 class UserCreateSchema(BaseModel):
-    name: UserName
-    age: Optional[int] = None
+    username: UserName
     email: EmailStr
     password: str
 
 
 class UserSchema(BaseModel):
     id: UUID
-    name: UserName
-    age: Union[int, None]
+    username: UserName
     email: EmailStr
     created_at: datetime
     updated_at: datetime
@@ -26,7 +24,5 @@ class UserSchema(BaseModel):
 
 
 class UserUpdateSchema(BaseModel):
-    name: Optional[UserName] = None
-    age: Optional[int] = None
+    username: Optional[UserName] = None
     email: Optional[EmailStr] = None
-    password: Optional[str] = None

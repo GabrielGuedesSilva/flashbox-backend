@@ -1,13 +1,13 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, DateTime, String, func
+from sqlalchemy import Column, DateTime, ForeignKey, String, func
 from sqlalchemy.dialects.postgresql import UUID
 
 from src.database.models import Base
 
 
-class User(Base):
-    __tablename__ = 'users'
+class AuthUser(Base):
+    __tablename__ = 'auth_user'
 
     id = Column(
         UUID(as_uuid=True),
@@ -15,9 +15,13 @@ class User(Base):
         default=uuid4,
         nullable=False,
     )
-    username = Column(String(50), nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-    password = Column(String(255), nullable=False)
+
+    refresh_token = Column(String(555), nullable=False)
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
     created_at = Column(
         DateTime, default=func.now(), server_default=func.now(), nullable=False
     )

@@ -8,5 +8,5 @@ NonEmptyStr = Annotated[
 NonNegativeInt = Annotated[int, Field(ge=0)]
 NonNegativeFloat = Annotated[float, Field(ge=0)]
 UserName = Annotated[
-    str, StringConstraints(min_length=5, strip_whitespace=True)
+    str, StringConstraints(min_length=3, strip_whitespace=True)
 ]
