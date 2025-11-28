@@ -41,6 +41,7 @@ class FlashcardRouter:
             request: Request,
         ):
             query = Query(request.query_params)
+            query.filters['user_id'] = request.state.user_id
             flashcards = await self.flashcard_service.get_all(query)
             return flashcards
 
